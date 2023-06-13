@@ -1,0 +1,1 @@
+﻿INSERT INTO TempTable ( [id] , [title], [values] ) values (1 , 2, 3)
