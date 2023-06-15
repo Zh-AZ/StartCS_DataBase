@@ -9,15 +9,24 @@ using StartCS_DataBase.ViewModels.Base;
 using System.Windows.Markup;
 using System.Data.SqlClient;
 using System.Windows;
+using System.Data;
+using System.Windows.Media;
 
 namespace StartCS_DataBase.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        static MainWindow MainWindow;
+
+        public void OnViewInitialized(MainWindow mainWindow) { MainWindow = mainWindow; }
+
         public MainWindowViewModel()
         {
-            ConnectionBD();
-            WriteToBD();
+            //ConnectionBD();
+            //WriteToBD();
+
+            //FillDataGrid();
+            FillTable();
         }
 
         //Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = MSSQLLocalDemo; Integrated Security = True; Pooling=False
@@ -30,6 +39,25 @@ namespace StartCS_DataBase.ViewModels
             UserID = "Admin", Password = "qwerty",
             Pooling = true
         };
+
+        void FillDataGrid()
+        {
+            SqlConnection sqlConnection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+
+            string sqlScript = @"SELECT 
+                        Clients.clients as 'Клиенты',
+                        Managers.managers as 'Менеджеры',
+                        TempTable.id as 'ID'
+                        FROM Clients, Managers, TempTable
+                        WHERE Clients.id = TempTable.id or Managers.id = TempTable.id";
+
+            sqlDataAdapter.SelectCommand = new SqlCommand(sqlScript, sqlConnection);
+            sqlDataAdapter.Fill(dataTable);
+            
+            //MainWindow.gridView.DataContext = dataTable.DefaultView;
+        }
 
         void ConnectionBD()
         {
@@ -106,5 +134,35 @@ namespace StartCS_DataBase.ViewModels
                 MessageBox.Show($"{ex.Message}");
             }
         }
+
+       void FillTable()
+       {
+            SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder()
+            {
+                DataSource = "(localdb)\\MSSQLLocalDB",
+                InitialCatalog = "MSSQLLocalDemo",
+                IntegratedSecurity = true,
+                UserID = "Admin",
+                Password = "qwerty",
+                Pooling = true
+            };
+            
+            SqlConnection sqlConnection = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
+            DataTable dataTable = new DataTable();
+            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter();
+
+            string sqlScript = @"SELECT 
+                        Clients.clients as 'Клиенты',
+                        Managers.managers as 'Менеджеры',
+                        TempTable.id as 'ID'
+                        FROM Clients, Managers, TempTable
+                        WHERE Clients.id = TempTable.id or Managers.id = TempTable.id";
+
+            sqlDataAdapter.SelectCommand = new SqlCommand(sqlScript, sqlConnection);
+            
+            sqlDataAdapter.Fill(dataTable);
+
+            MainWindow.gridAllView.DataContext = dataTable.DefaultView;
+       }
     }
 }

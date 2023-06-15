@@ -30,10 +30,10 @@
 
 --DROP TABLE Clients
 
---SELECT 
---Clients.clients,
---Managers.managers,
---TempTable.id as 'ID_Client'
---FROM Clients, Managers, TempTable
---WHERE Clients.id = TempTable.id or Managers.id = TempTable.id
+SELECT 
+Clients.clients,
+Managers.managers,
+TempTable.id as 'ID_Client'
+FROM Clients, Managers, TempTable
+WHERE Clients.id = TempTable.id or Managers.id = TempTable.id
 

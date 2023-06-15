@@ -13,6 +13,32 @@
     </Window.DataContext>
     
     <Grid>
-        
+        <!--<DataGrid x:Name="gridView"
+                  IsSynchronizedWithCurrentItem="True"
+                  SelectionMode="Single" 
+                  AutoGenerateColumns="False" 
+                  ItemsSource="{Binding}"
+                  IsReadOnly="False">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="clients" 
+                                    Binding="{Binding clients}" 
+                                    Header="Клиенты" 
+                                    IsReadOnly="True"/>
+
+                <DataGridTextColumn x:Name="managers" 
+                                    Binding="{Binding managers}" 
+                                    Header="Менеджеры"/>
+
+                <DataGridTextColumn x:Name="ID_Client" 
+                                    Binding="{Binding ID_Client}" 
+                                    Header="ID"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+
+        <DataGrid x:Name="gridAllView"
+                  AutoGenerateColumns="True" 
+                  ItemsSource="{Binding}">
+        </DataGrid>
     </Grid>
 </Window>
